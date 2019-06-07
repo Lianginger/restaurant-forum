@@ -8,6 +8,13 @@ const adminController = {
     })
   },
 
+  getRestaurant: (req, res) => {
+    Restaurant.findByPk(req.params.id)
+      .then(restaurant => {
+        res.render('admin/restaurant', { restaurant })
+      })
+  },
+
   createRestaurant: (req, res) => {
     res.render('admin/create')
   },
