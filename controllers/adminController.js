@@ -15,6 +15,29 @@ const adminController = {
       })
   },
 
+  editRestaurant: (req, res) => {
+    Restaurant.findByPk(req.params.id)
+      .then(restaurant => {
+        res.render('admin/create', { restaurant })
+      })
+  },
+
+  putRestaurant: (req, res) => {
+    if (!req.body.name) {
+      req.flash('error_messages', '餐廳名稱不存在！')
+      res.redirect('back')
+    } else {
+      Restaurant.findByPk(req.params.id)
+        .then(restaurant => {
+          restaurant.update(req.body)
+        })
+        .then(restaurant => {
+          req.flash('success_messages', '更新成功！')
+          res.redirect('/admin/restaurants')
+        })
+    }
+  },
+
   createRestaurant: (req, res) => {
     res.render('admin/create')
   },
