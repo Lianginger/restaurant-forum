@@ -26,6 +26,8 @@ app.use(passport.session())
 
 app.use(methodOverride('_method'))
 
+app.use('/upload', express.static(__dirname + '/upload'))
+
 // 設定到 res.locals
 app.use((req, res, next) => {
   res.locals.success_messages = req.flash('success_messages')
