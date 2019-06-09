@@ -1,5 +1,6 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 const fs = require('fs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = 'a6377f1810d0270'
@@ -104,6 +105,29 @@ const adminController = {
             req.flash('success_messages', `餐廳 ${restaurant.name} 刪除成功！`)
             res.redirect('/admin/restaurants')
           })
+      })
+  },
+
+  editUser: (req, res) => {
+    User.findAll().then(users => {
+      res.render('admin/users', { users })
+    })
+  },
+
+  putUser: (req, res) => {
+    User.findByPk(req.params.id)
+      .then(user => {
+        if (user.isAdmin) {
+          req.flash('success_messages', `使用者：${user.name} 權限更新成 user 成功！`)
+          user.isAdmin = false
+          user.save()
+            .then(res.redirect('/admin/users'))
+        } else {
+          req.flash('success_messages', `使用者：${user.name} 權限更新成 admin 成功！`)
+          user.isAdmin = true
+          user.save()
+            .then(res.redirect('/admin/users'))
+        }
       })
   }
 }

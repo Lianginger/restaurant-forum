@@ -17,7 +17,7 @@ module.exports = (app, passport) => {
       if (req.user.isAdmin) {
         return next()
       }
-      res.redirect('/')
+      return res.redirect('/')
     }
     res.redirect('/signin')
   }
@@ -25,6 +25,9 @@ module.exports = (app, passport) => {
   //如果使用者訪問首頁，就導向 /restaurants 的頁面
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
   app.get('/restaurants', authenticated, restController.getRestaurants)
+
+  app.get('/admin/users', authenticatedAdmin, adminController.editUser)
+  app.put('/admin/users/:id', authenticatedAdmin, adminController.putUser)
 
   app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
   app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
