@@ -1,6 +1,7 @@
 const restController = require('../controllers/restController')
 const adminController = require('../controllers/adminController')
 const userController = require('../controllers/userController')
+const categoryController = require('../controllers/categoryController')
 const mutler = require('multer')
 const upload = mutler({ dest: 'temp/' })
 
@@ -38,11 +39,11 @@ module.exports = (app, passport) => {
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
 
-  app.get('/admin/categories', authenticatedAdmin, adminController.getCategories)
-  app.post('/admin/categories', authenticatedAdmin, adminController.postCategory)
-  app.get('/admin/categories/:id', authenticatedAdmin, adminController.getCategories)
-  app.put('/admin/categories/:id', authenticatedAdmin, adminController.putCategory)
-  app.delete('/admin/categories/:id', authenticatedAdmin, adminController.deleteCategory)
+  app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
+  // app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
+  // app.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)
+  // app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
+  // app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
 
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)
