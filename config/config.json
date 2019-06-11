@@ -8,10 +8,10 @@
   },
   "developmentSMS": {
     "username": "root",
-    "password": "password",
-    "database": "forum23",
+    "password": "",
+    "database": "forum",
     "host": "192.168.99.100",
-    "port": 32779,
+    "port": 32769,
     "dialect": "mysql"
   },
   "test": {
