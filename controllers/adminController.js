@@ -24,7 +24,9 @@ const adminController = {
   editRestaurant: (req, res) => {
     Restaurant.findByPk(req.params.id)
       .then(restaurant => {
-        res.render('admin/create', { restaurant })
+        Category.findAll().then(categories => {
+          res.render('admin/create', { restaurant, categories })
+        })
       })
   },
 
@@ -65,7 +67,9 @@ const adminController = {
   },
 
   createRestaurant: (req, res) => {
-    res.render('admin/create')
+    Category.findAll().then(categories => {
+      res.render('admin/create', { categories })
+    })
   },
 
   postRestaurant: (req, res) => {
@@ -84,6 +88,7 @@ const adminController = {
             address: req.body.address,
             opening_hours: req.body.opening_hours,
             description: req.body.description,
+            CategoryId: req.body.CategoryId,
             image: img.data.link
           }).then(restaurant => {
             req.flash('success_messages', `餐廳 ${restaurant.name} 新增成功！`)
