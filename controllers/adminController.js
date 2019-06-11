@@ -9,7 +9,6 @@ const IMGUR_CLIENT_ID = 'a6377f1810d0270'
 const adminController = {
   getRestaurants: (req, res) => {
     Restaurant.findAll({ include: [Category] }).then(restaurants => {
-      console.log(restaurants)
       res.render('admin/restaurants', { restaurants })
     })
   },
