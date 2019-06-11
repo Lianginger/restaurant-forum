@@ -26,7 +26,7 @@ module.exports = (app, passport) => {
   //如果使用者訪問首頁，就導向 /restaurants 的頁面
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
   app.get('/restaurants', authenticated, restController.getRestaurants)
-  // app.get('/restaurant/:id', authenticated, restController.getRestaurant)
+  app.get('/restaurants/:id', authenticated, restController.getRestaurant)
 
   app.get('/admin/users', authenticatedAdmin, adminController.editUser)
   app.put('/admin/users/:id', authenticatedAdmin, adminController.putUser)
