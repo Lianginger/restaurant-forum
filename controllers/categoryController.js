@@ -41,6 +41,16 @@ let categoryController = {
             })
         })
     }
+  },
+
+  deleteCategory: (req, res) => {
+    Category.findByPk(req.params.id)
+      .then(category => {
+        category.destroy().then(() => {
+          req.flash('success_messages', `類別 ${category.name} 刪除完成！`)
+          res.redirect('/admin/categories')
+        })
+      })
   }
 }
 
