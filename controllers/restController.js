@@ -58,7 +58,6 @@ const restController = {
         { model: Comment, include: [User] }]
     })
       .then(restaurant => {
-        console.log(restaurant)
         res.render('restaurant', { restaurant })
       })
   }
