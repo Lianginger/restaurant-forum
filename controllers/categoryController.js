@@ -24,6 +24,10 @@ let categoryController = {
           req.flash('success_messages', `類別 ${req.body.name} 新增完成！`)
           res.redirect('/admin/categories')
         })
+        .catch(function (err) {
+          // print the error details
+          console.log(err)
+        })
     }
   },
 
