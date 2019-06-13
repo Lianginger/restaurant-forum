@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt-nodejs')
 const db = require('../models')
 const User = db.User
+const Comment = db.Comment
+const Restaurant = db.Restaurant
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = 'a6377f1810d0270'
 
@@ -48,7 +50,15 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    res.render('userProfile')
+    User.findByPk(req.params.id, {
+      include: { model: Comment, include: Restaurant }
+    }).then(user => {
+      const commentNum = user.Comments.length
+      const commentRestaurantArray = user.Comments.map(comment => comment.Restaurant.name)
+      const commentRestaurantNum = commentRestaurantArray.filter(onlyUnique).length
+      res.render('userProfile', { user, commentNum, commentRestaurantNum })
+    })
+
   },
 
   editUser: (req, res) => {
@@ -89,3 +99,7 @@ const userController = {
 }
 
 module.exports = userController
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
