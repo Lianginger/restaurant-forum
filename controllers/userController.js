@@ -82,7 +82,7 @@ const userController = {
               user.save()
                 .then(user => {
                   req.flash('success_messages', `用戶 ${user.name} 資料更新成功！`)
-                  res.redirect('/users/${req.params.id}')
+                  res.redirect(`/users/${req.params.id}`)
                 })
             })
         })
