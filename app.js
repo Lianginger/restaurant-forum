@@ -36,7 +36,7 @@ app.use(passport.session())
 
 app.use(methodOverride('_method'))
 
-app.use('/upload', express.static(__dirname + '/upload'))
+app.use(express.static('public'))
 
 // 設定到 res.locals
 app.use((req, res, next) => {

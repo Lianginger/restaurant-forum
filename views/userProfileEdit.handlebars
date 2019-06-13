@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="card w-100 p-5">
+    <form action="/users/{{user.id}}?_method=PUT" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="image">大頭照：</label>
+        <input type="file" class="form-control-file" id="image" name="image">
+      </div>
+      <div class="form-group mb-3">
+        <label for="name">用戶名：</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{user.name}}">
+      </div>
+      <button type="submit" class="btn btn-primary" id="summitBtn">完成</button>
+      <button class="btn btn-primary d-none" type="button" id="uploadSpin" disabled>
+        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+        上傳中...
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const summitBtn = document.querySelector('#summitBtn')
+  const uploadSpin = document.querySelector('#uploadSpin')
+  summitBtn.addEventListener('click', () => {
+    summitBtn.classList.add('d-none')
+    uploadSpin.classList.remove('d-none')
+  })
+</script>

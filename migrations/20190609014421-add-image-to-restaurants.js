@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.addColumn('Restaurants', 'image', {
       type: Sequelize.STRING,
-      defaultValue: '/upload/default-image.jpg',
+      defaultValue: '/image/restaurant-default.jpg',
     })
   },
 

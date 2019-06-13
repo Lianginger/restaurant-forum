@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt-nodejs')
 const db = require('../models')
 const User = db.User
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = 'a6377f1810d0270'
 
 const userController = {
   signUpPage: (req, res) => {
@@ -43,6 +45,46 @@ const userController = {
     req.flash('success_messages', '登出成功！')
     req.logout()
     res.redirect('/signin')
+  },
+
+  getUser: (req, res) => {
+    res.render('userProfile')
+  },
+
+  editUser: (req, res) => {
+    res.render('userProfileEdit')
+  },
+
+  putUser: (req, res) => {
+    if (!req.body.name) {
+      req.flash('error_messages', '請輸入用戶名！')
+      res.redirect('back')
+    } else {
+      const { file } = req
+
+      if (file) {
+        imgur.setClientID(IMGUR_CLIENT_ID)
+        imgur.upload(file.path, (err, img) => {
+          User.findByPk(req.params.id)
+            .then(user => {
+              user.update(req.body)
+              user.image = img.data.link
+              user.save()
+                .then(user => {
+                  req.flash('success_messages', `用戶 ${user.name} 資料更新成功！`)
+                  res.redirect('/users/${req.params.id}')
+                })
+            })
+        })
+      } else {
+        User.findByPk(req.params.id).then(user => {
+          user.update(req.body).then(() => {
+            req.flash('success_messages', '用戶資料更新成功！')
+            res.redirect(`/users/${req.params.id}`)
+          })
+        })
+      }
+    }
   }
 }
 

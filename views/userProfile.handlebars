@@ -1,0 +1,20 @@
+<div class="container">
+
+  <div class="card w-100">
+    <div class="row">
+      <div class="col-md-6 col-12 p-5">
+        <div class="w-50 m-auto" id="avatar"
+          style="background-image: url({{user.image}});border-radius: 50%; background-repeat: no-repeat;background-position: center;background-size: cover; padding-bottom: 50%">
+
+        </div>
+      </div>
+      <div class="col-md-6 col-12 p-5 d-flex align-items-center">
+        <div>
+          <h5 class="card-title">{{user.name}}</h5>
+          <p class="card-text">{{user.email}}</p>
+          <a href="/users/{{user.id}}/edit" class="btn btn-primary">編輯</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
