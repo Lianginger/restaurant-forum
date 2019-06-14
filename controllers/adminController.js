@@ -123,17 +123,12 @@ const adminController = {
   putUser: (req, res) => {
     User.findByPk(req.params.id)
       .then(user => {
-        if (user.isAdmin) {
-          req.flash('success_messages', `使用者：${user.name} 權限更新成 user 成功！`)
-          user.isAdmin = false
-          user.save()
-            .then(res.redirect('/admin/users'))
-        } else {
-          req.flash('success_messages', `使用者：${user.name} 權限更新成 admin 成功！`)
-          user.isAdmin = true
-          user.save()
-            .then(res.redirect('/admin/users'))
-        }
+        const updatedAdmin = !user.isAdmin
+        const text = user.isAdmin ? 'user' : 'admin'
+        req.flash('success_messages', `使用者：${user.name} 權限更新成 ${text} 成功！`)
+        user.isAdmin = updatedAdmin
+        user.save()
+          .then(res.redirect('/admin/users'))
       })
   }
 }
