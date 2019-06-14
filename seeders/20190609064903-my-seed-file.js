@@ -44,7 +44,7 @@ module.exports = {
           tel: faker.phone.phoneNumber(),
           address: faker.address.streetAddress(),
           opening_hours: '08:00',
-          image: faker.image.imageUrl(),
+          image: '/image/restaurant-default.jpg',
           description: faker.lorem.text(),
           createdAt: new Date(),
           updatedAt: new Date(),
