@@ -56,13 +56,15 @@ const userController = {
       const commentNum = user.Comments.length
       const commentRestaurantArray = user.Comments.map(comment => comment.Restaurant.name)
       const commentRestaurantNum = commentRestaurantArray.filter(onlyUnique).length
-      res.render('userProfile', { user, commentNum, commentRestaurantNum })
+      res.render('userProfile', { userProfile: user, commentNum, commentRestaurantNum })
     })
 
   },
 
   editUser: (req, res) => {
-    res.render('userProfileEdit')
+    User.findByPk(req.params.id).then(user => {
+      res.render('userProfileEdit', { userProfile: user })
+    })
   },
 
   putUser: (req, res) => {

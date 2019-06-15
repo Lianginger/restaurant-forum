@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-6 col-12 p-5">
         <div class="w-50 m-auto" id="avatar"
-          style="background-image: url({{user.image}});border-radius: 50%; background-repeat: no-repeat;background-position: center;background-size: cover; padding-bottom: 50%">
+          style="background-image: url({{userProfile.image}});border-radius: 50%; background-repeat: no-repeat;background-position: center;background-size: cover; padding-bottom: 50%">
 
         </div>
       </div>
@@ -14,9 +14,9 @@
           <span class="badge badge-warning" data-toggle="tooltip" data-placement="right"
             title="撰寫超過三次(含)評論，即獲得美食評論家標徽章！">美食評論家</span>
           {{/ifCommentNumBiggerThanTwo}}
-          <h5 class="card-title">{{user.name}}</h5>
-          <p class="card-text">{{user.email}}</p>
-          <a href="/users/{{user.id}}/edit" class="btn btn-primary">編輯</a>
+          <h5 class="card-title">{{userProfile.name}}</h5>
+          <p class="card-text">{{userProfile.email}}</p>
+          <a href="/users/{{userProfile.id}}/edit" class="btn btn-primary">編輯</a>
         </div>
       </div>
     </div>
@@ -27,7 +27,7 @@
       已撰寫 {{commentNum}} 則評論，評論過 {{commentRestaurantNum}} 間餐廳
     </div>
     <div class="list-group">
-      {{#each user.Comments}}
+      {{#each userProfile.Comments}}
       <a href="/restaurants/{{this.Restaurant.id}}" class="list-group-item list-group-item-action">
         <p>{{this.text}}</p>
         <small>{{this.Restaurant.name}} 餐廳　－{{moment this.createdAt}}</small>
