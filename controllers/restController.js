@@ -60,6 +60,21 @@ const restController = {
       .then(restaurant => {
         res.render('restaurant', { restaurant })
       })
+  },
+
+  getFeeds: async (req, res) => {
+    let restaurantFeeds = await Restaurant.findAll({
+      limit: 10,
+      order: [['createdAt', 'DESC']],
+      include: [Category]
+    })
+    let commentFeeds = await Comment.findAll({
+      limit: 10,
+      order: [['createdAt', 'DESC']],
+      include: [User, Restaurant]
+    })
+
+    res.render('feeds', { restaurantFeeds, commentFeeds })
   }
 }
 
