@@ -62,6 +62,17 @@ const restController = {
       })
   },
 
+  getRestaurantDashboard: async (req, res) => {
+    const restaurant = await Restaurant.findByPk(req.params.id, {
+      include: [
+        Category,
+        { model: Comment, include: [User] }]
+    })
+    const commentsNum = restaurant.Comments.length
+
+    res.render('dashboard', { restaurant, commentsNum })
+  },
+
   getFeeds: async (req, res) => {
     let restaurantFeeds = await Restaurant.findAll({
       limit: 10,
