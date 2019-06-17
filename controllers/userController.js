@@ -107,7 +107,7 @@ const userController = {
       RestaurantId: req.params.restaurantId
     })
 
-    res.redirect('/restaurants')
+    res.redirect('back')
   },
 
   removeFavorite: async (req, res) => {
@@ -119,7 +119,7 @@ const userController = {
     })
 
     await favorite.destroy()
-    res.redirect('/restaurants')
+    res.redirect('back')
   },
 
   addLike: async (req, res) => {
