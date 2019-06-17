@@ -31,6 +31,9 @@ module.exports = (app, passport) => {
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
   app.get('/restaurants/:id/dashboard', authenticated, restController.getRestaurantDashboard)
 
+  app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
+  app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
+
 
   app.get('/admin/users', authenticatedAdmin, adminController.editUser)
   app.put('/admin/users/:id', authenticatedAdmin, adminController.putUser)
