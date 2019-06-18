@@ -71,6 +71,24 @@ const restController = {
       })
   },
 
+  getTopRestaurant: async (req, res) => {
+    const restaurants = await Restaurant.findAll({
+      include: [{ model: User, as: 'FavoritedUsers' }]
+    })
+    let resDatas = restaurants.map(res => ({
+      ...res.dataValues,
+      description: res.dataValues.description.substring(0, 30),
+      favoratedUserCount: res.FavoritedUsers.length,
+      isFavorited: req.user.FavoritedRestaurants.map(favoritedRestaurant => favoritedRestaurant.id).includes(res.id)
+    }))
+    resDatas = resDatas.sort((a, b) => { return b.favoratedUserCount - a.favoratedUserCount }).slice(0, 10)
+    resDatas = resDatas.map((res, index) => ({
+      ...res,
+      rank: index + 1
+    }))
+    res.render('topRestaurant', { restaurants: resDatas })
+  },
+
   getRestaurantDashboard: async (req, res) => {
     const restaurant = await Restaurant.findByPk(req.params.id, {
       include: [

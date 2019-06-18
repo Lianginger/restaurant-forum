@@ -158,7 +158,7 @@ const userController = {
       isFollowed: req.user.Followings.map(following => following.id).includes(user.id)
     }))
 
-    userDatas = userDatas.sort((a, b) => { b.FollowerCount - a.FollowerCount })
+    userDatas = userDatas.sort((a, b) => { return b.FollowerCount - a.FollowerCount })
     res.render('topUser', { users: userDatas })
   },
 
