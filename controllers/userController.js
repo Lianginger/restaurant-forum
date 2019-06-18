@@ -141,6 +141,24 @@ const userController = {
 
     await like.destroy()
     res.redirect('back')
+  },
+
+  getTopUser: async (req, res) => {
+    const users = await User.findAll({
+      include: [{
+        model: User, as: 'Followers'
+      }]
+    })
+
+    let userDatas = users.map(user => ({
+      ...user.dataValues,
+      FollowerCount: user.Followers.length,
+      // 判斷目前登入使用者是否已追蹤該 User 物件
+      isFollowed: req.user.Followings.map(following => following.id).includes(user.id)
+    }))
+
+    userDatas = userDatas.sort((a, b) => { b.FollowerCount - a.FollowerCount })
+    res.render('topUser', { users: userDatas })
   }
 }
 
