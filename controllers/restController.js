@@ -93,11 +93,13 @@ const restController = {
     const restaurant = await Restaurant.findByPk(req.params.id, {
       include: [
         Category,
-        { model: Comment, include: [User] }]
+        { model: Comment, include: [User] },
+        { model: User, as: 'FavoritedUsers' }]
     })
     const commentsNum = restaurant.Comments.length
+    const favoritedNum = restaurant.FavoritedUsers.length
 
-    res.render('dashboard', { restaurant, commentsNum })
+    res.render('dashboard', { restaurant, commentsNum, favoritedNum })
   },
 
   getFeeds: async (req, res) => {
