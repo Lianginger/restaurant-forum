@@ -35,7 +35,8 @@
           </a>
           <span class="badge badge-secondary">追蹤人數：{{this.favoratedUserCount}}</span>
           <p>{{this.description}}</p>
-          <p>
+          <div class="row">
+            <a href="/restaurants/{{this.id}}" class="btn btn-primary mx-3">Show</a>
             {{#if isFavorited }}
             <form action="/favorite/{{this.id}}?_method=DELETE" method="POST" style="display: contents;"><button
                 type="submit" class="btn btn-danger">移除最愛</button></form>
@@ -43,7 +44,7 @@
             <form action="/favorite/{{this.id}}" method="POST" style="display: contents;"><button type="submit"
                 class="btn btn-primary">加到最愛</button></form>
             {{/if}}
-          </p>
+          </div>
         </div>
       </div>
     </div>
