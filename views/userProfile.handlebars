@@ -22,7 +22,21 @@
             <li>{{followerNum}} 位粉絲</li>
             <li>{{followingNum}} 位追蹤對象</li>
           </ul>
+          {{#ifCond userProfile.id user.id}}
           <a href="/users/{{userProfile.id}}/edit" class="btn btn-primary">編輯</a>
+          {{else}}
+          {{#if isFollowed}}
+          <form action="/following/{{userProfile.id}}?_method=DELETE" method="POST" style="display: contents;">
+            <input type="text" name="followerId" class="d-none" value="{{user.id}}">
+            <input type="text" name="followingId" class="d-none" value="{{userProfile.id}}">
+            <button type="submit" class="btn btn-danger">取消追蹤</button></form>
+          {{else}}
+          <form action="/following/{{userProfile.id}}" method="POST" style="display: contents;">
+            <input type="text" name="followerId" class="d-none" value="{{user.id}}">
+            <input type="text" name="followingId" class="d-none" value="{{userProfile.id}}">
+            <button type="submit" class="btn btn-primary">追蹤</button></form>
+          {{/if}}
+          {{/ifCond}}
         </div>
       </div>
     </div>

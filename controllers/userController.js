@@ -62,6 +62,8 @@ const userController = {
         { model: User, as: 'Followings' }
       ]
     }).then(user => {
+      const isFollowed = req.user.Followings.map(following => following.id).includes(user.id)
+      console.log(req.user.Followings.map(following => following.id))
       const followerNum = user.Followers.length
       const followingNum = user.Followings.length
       const favoritedRestaurantNum = user.FavoritedRestaurants.length
@@ -74,7 +76,8 @@ const userController = {
         commentRestaurantNum,
         followerNum,
         followingNum,
-        favoritedRestaurantNum
+        favoritedRestaurantNum,
+        isFollowed
       })
     })
 
