@@ -54,12 +54,28 @@ const userController = {
 
   getUser: (req, res) => {
     User.findByPk(req.params.id, {
-      include: { model: Comment, include: Restaurant }
+      include: [
+        { model: Comment, include: Restaurant },
+        { model: Restaurant, as: 'FavoritedRestaurants' },
+        { model: Restaurant, as: 'LikedRestaurants' },
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' }
+      ]
     }).then(user => {
+      const followerNum = user.Followers.length
+      const followingNum = user.Followings.length
+      const favoritedRestaurantNum = user.FavoritedRestaurants.length
       const commentNum = user.Comments.length
       const commentRestaurantArray = user.Comments.map(comment => comment.Restaurant.name)
       const commentRestaurantNum = commentRestaurantArray.filter(onlyUnique).length
-      res.render('userProfile', { userProfile: user, commentNum, commentRestaurantNum })
+      res.render('userProfile', {
+        userProfile: user,
+        commentNum,
+        commentRestaurantNum,
+        followerNum,
+        followingNum,
+        favoritedRestaurantNum
+      })
     })
 
   },

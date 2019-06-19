@@ -16,23 +16,92 @@
           {{/ifCommentNumBiggerThanTwo}}
           <h5 class="card-title">{{userProfile.name}}</h5>
           <p class="card-text">{{userProfile.email}}</p>
+          <ul style="list-style-type: none; padding:0px">
+            <li>{{commentNum}} 則撰寫評論</li>
+            <li>{{favoritedRestaurantNum}} 家收藏餐廳</li>
+            <li>{{followerNum}} 位粉絲</li>
+            <li>{{followingNum}} 位追蹤對象</li>
+          </ul>
           <a href="/users/{{userProfile.id}}/edit" class="btn btn-primary">編輯</a>
         </div>
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-9 col-12">
+      <div class="card w-100 mt-3">
+        <div class="card-header">
+          已撰寫 {{commentNum}} 則評論，評論過 {{commentRestaurantNum}} 間餐廳
+        </div>
+        <div class="list-group">
+          {{#each userProfile.Comments}}
+          <a href="/restaurants/{{this.Restaurant.id}}" class="list-group-item list-group-item-action">
+            <div class="row">
+              <div class="col-3">
+                <div class="m-auto"
+                  style="background-image: url({{this.Restaurant.image}});border-radius: 50%; background-repeat: no-repeat;background-position: center;background-size: cover;width: 5em; height: 5em;">
+                </div>
+              </div>
+              <div class="col-9">
+                <h4>{{this.Restaurant.name}}</h4>
+                <p>{{this.text}}</p>
+                <small>評論於 {{moment this.createdAt}}</small>
+              </div>
+            </div>
+          </a>
+          {{/each}}
+        </div>
+      </div>
 
-  <div class="card my-5 w-100">
-    <div class="card-header">
-      已撰寫 {{commentNum}} 則評論，評論過 {{commentRestaurantNum}} 間餐廳
+      <div class="card w-100 mt-3">
+        <div class="card-header">
+          {{favoritedRestaurantNum}} 家收藏餐廳
+        </div>
+        <div class="card-body">
+          {{#each userProfile.FavoritedRestaurants}}
+          <a href="/restaurants/{{this.id}}" class="d-inline-block m-1">
+            <div
+              style="background-image: url({{this.image}});border-radius: 50%; background-repeat: no-repeat;background-position: center;background-size: cover; width:3em; height:3em"
+              data-toggle="tooltip" data-placement="right" title="{{this.name}}">
+            </div>
+          </a>
+          {{/each}}
+        </div>
+      </div>
     </div>
-    <div class="list-group">
-      {{#each userProfile.Comments}}
-      <a href="/restaurants/{{this.Restaurant.id}}" class="list-group-item list-group-item-action">
-        <p>{{this.text}}</p>
-        <small>{{this.Restaurant.name}} 餐廳　－{{moment this.createdAt}}</small>
-      </a>
-      {{/each}}
+
+    <div class="col-md-3 col-12">
+      <div class="card w-100 mt-3">
+        <div class="card-header">
+          {{followerNum}} 位粉絲
+        </div>
+        <div class="card-body">
+          {{#each userProfile.Followers}}
+          <a href="/users/{{this.id}}" class="d-inline-block m-1">
+            <div
+              style="background-image: url({{this.image}});border-radius: 50%; background-repeat: no-repeat;background-position: center;background-size: cover; width:3em; height:3em"
+              data-toggle="tooltip" data-placement="right" title="{{this.name}}">
+            </div>
+          </a>
+          {{/each}}
+        </div>
+      </div>
+
+      <div class="card w-100 mt-3">
+        <div class="card-header">
+          {{followingNum}} 位追蹤對象
+        </div>
+        <div class="card-body">
+          {{#each userProfile.Followings}}
+          <a href="/users/{{this.id}}" class="d-inline-block m-1">
+            <div
+              style="background-image: url({{this.image}});border-radius: 50%; background-repeat: no-repeat;background-position: center;background-size: cover; width:3em; height:3em"
+              data-toggle="tooltip" data-placement="right" title="{{this.name}}">
+            </div>
+          </a>
+          {{/each}}
+        </div>
+      </div>
     </div>
   </div>
 </div>
