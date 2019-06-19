@@ -24,6 +24,13 @@ module.exports = (app, passport) => {
     res.redirect('/signin')
   }
 
+  const authenticatedUserProfile = (req, res, next) => {
+    if (parseInt(req.params.id) === req.user.id) {
+      return next()
+    }
+    res.redirect(`/users/${req.params.id}`)
+  }
+
   //如果使用者訪問首頁，就導向 /restaurants 的頁面
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
   app.get('/restaurants', authenticated, restController.getRestaurants)
@@ -65,7 +72,7 @@ module.exports = (app, passport) => {
 
   app.get('/users/top', authenticated, userController.getTopUser)
   app.get('/users/:id', authenticated, userController.getUser)
-  app.get('/users/:id/edit', authenticated, userController.editUser)
+  app.get('/users/:id/edit', authenticated, authenticatedUserProfile, userController.editUser)
   app.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
 
   app.get('/signup', userController.signUpPage)
