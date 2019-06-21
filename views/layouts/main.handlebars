@@ -8,28 +8,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
   {{!-- Navbar --}}
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">餐廳評論網</a>
-    <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
-      <ul class="navbar-nav mr-auto">
-      </ul>
-      <div>
-        {{#if user.isAdmin}}
-        <a href="/admin" style="color: white;margin-right: 10px;">Admin 後台</a>
-        {{/if}}
+  <div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" id="logo-coolRest" href="/">CoolRest 餐廳評論網</a>
         {{#if user}}
-        <img src="{{user.image}}" alt="avatar" style="border-radius: 50%; width:2em;height: 2em">
-        <span style="color: white;margin-right: 10px;">Hi, {{user.name}}</span>
-        <a href="/users/{{user.id}}" style="color: white;margin-right: 10px;">Profile</a>
-        <a href="/logout"><button class="btn btn-outline-success my-2 my-sm-0">LogOut</button></a>
+        <div class="btn-group">
+          <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <img src="{{user.image}}" alt="avatar" style="border-radius: 50%; width:1.8em;height: 1.8em">
+            <span class="mx-1">Hi, {{user.name}}</span>
+          </button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/users/{{user.id}}">個人資料</a>
+            {{#if user.isAdmin}}
+            <a class="dropdown-item" href="/admin">管理員後台</a>
+            {{/if}}
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">LogOut</a>
+          </div>
+        </div>
         {{/if}}
       </div>
-    </div>
-  </nav>
+    </nav>
+  </div>
+
   <br />
 
   <main role="main">

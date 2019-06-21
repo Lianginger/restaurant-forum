@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Pacifico|Noto+Sans+TC&display=swap');
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
+#logo-coolRest {
+  font-family: 'Pacifico','Noto Sans TC', sans-serif;
+}
