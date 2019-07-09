@@ -14,21 +14,24 @@ const session = require('express-session')
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
 
-
-
-app.engine('handlebars', handlebars({
-  defaultLayout: 'main',
-  helpers: require('./config/handlebars-helpers')
-}))
+app.engine(
+  'handlebars',
+  handlebars({
+    defaultLayout: 'main',
+    helpers: require('./config/handlebars-helpers')
+  })
+)
 app.set('view engine', 'handlebars')
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use(session({
-  secret: 'secret',
-  resave: false,
-  saveUninitialized: false
-}))
+app.use(
+  session({
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: false
+  })
+)
 app.use(flash())
 
 app.use(passport.initialize())
@@ -51,5 +54,4 @@ app.listen(port, () => {
   console.log(`App is running on ${port}`)
 })
 
-
-require('./routes')(app, passport)
+require('./routes')(app)
