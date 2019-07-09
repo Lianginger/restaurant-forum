@@ -5,28 +5,29 @@ const Category = db.Category
 const fs = require('fs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = 'a6377f1810d0270'
+const adminService = require('../services/adminService')
 
 const adminController = {
   getRestaurants: (req, res) => {
-    Restaurant.findAll({ include: [Category] }).then(restaurants => {
-      res.render('admin/restaurants', { restaurants })
+    adminService.getRestaurants(req, res, data => {
+      res.render('admin/restaurants', data)
     })
   },
 
   getRestaurant: (req, res) => {
-    Restaurant.findByPk(req.params.id, { include: [Category] })
-      .then(restaurant => {
+    Restaurant.findByPk(req.params.id, { include: [Category] }).then(
+      restaurant => {
         res.render('admin/restaurant', { restaurant })
-      })
+      }
+    )
   },
 
   editRestaurant: (req, res) => {
-    Restaurant.findByPk(req.params.id)
-      .then(restaurant => {
-        Category.findAll().then(categories => {
-          res.render('admin/create', { restaurant, categories })
-        })
+    Restaurant.findByPk(req.params.id).then(restaurant => {
+      Category.findAll().then(categories => {
+        res.render('admin/create', { restaurant, categories })
       })
+    })
   },
 
   putRestaurant: (req, res) => {
@@ -39,28 +40,25 @@ const adminController = {
       if (file) {
         imgur.setClientID(IMGUR_CLIENT_ID)
         imgur.upload(file.path, (err, img) => {
-          Restaurant.findByPk(req.params.id)
-            .then(restaurant => {
-              restaurant.update(req.body)
-              restaurant.image = img.data.link
-              restaurant.save()
-                .then(restaurant => {
-                  req.flash('success_messages', `餐廳 ${restaurant.name} 更新成功！`)
-                  res.redirect('/admin/restaurants')
-                })
-            })
-        })
-
-      } else {
-        Restaurant.findByPk(req.params.id)
-          .then(restaurant => {
+          Restaurant.findByPk(req.params.id).then(restaurant => {
             restaurant.update(req.body)
-              .then(restaurant => {
-                req.flash('success_messages', `餐廳 ${restaurant.name} 更新成功！`)
-                res.redirect('/admin/restaurants')
-              })
+            restaurant.image = img.data.link
+            restaurant.save().then(restaurant => {
+              req.flash(
+                'success_messages',
+                `餐廳 ${restaurant.name} 更新成功！`
+              )
+              res.redirect('/admin/restaurants')
+            })
           })
-
+        })
+      } else {
+        Restaurant.findByPk(req.params.id).then(restaurant => {
+          restaurant.update(req.body).then(restaurant => {
+            req.flash('success_messages', `餐廳 ${restaurant.name} 更新成功！`)
+            res.redirect('/admin/restaurants')
+          })
+        })
       }
     }
   },
@@ -95,23 +93,20 @@ const adminController = {
           })
         })
       } else {
-        Restaurant.create(req.body)
-          .then(restaurant => {
-            req.flash('success_messages', `餐廳 ${restaurant.name} 新增成功！`)
-            res.redirect('/admin/restaurants')
-          })
+        Restaurant.create(req.body).then(restaurant => {
+          req.flash('success_messages', `餐廳 ${restaurant.name} 新增成功！`)
+          res.redirect('/admin/restaurants')
+        })
       }
     }
   },
   deleteRestaurant: (req, res) => {
-    Restaurant.findByPk(req.params.id)
-      .then(restaurant => {
-        restaurant.destroy()
-          .then(restaurant => {
-            req.flash('success_messages', `餐廳 ${restaurant.name} 刪除成功！`)
-            res.redirect('/admin/restaurants')
-          })
+    Restaurant.findByPk(req.params.id).then(restaurant => {
+      restaurant.destroy().then(restaurant => {
+        req.flash('success_messages', `餐廳 ${restaurant.name} 刪除成功！`)
+        res.redirect('/admin/restaurants')
       })
+    })
   },
 
   editUser: (req, res) => {
@@ -121,15 +116,16 @@ const adminController = {
   },
 
   putUser: (req, res) => {
-    User.findByPk(req.params.id)
-      .then(user => {
-        const updatedAdmin = !user.isAdmin
-        const text = user.isAdmin ? 'user' : 'admin'
-        req.flash('success_messages', `使用者：${user.name} 權限更新成 ${text} 成功！`)
-        user.isAdmin = updatedAdmin
-        user.save()
-          .then(res.redirect('/admin/users'))
-      })
+    User.findByPk(req.params.id).then(user => {
+      const updatedAdmin = !user.isAdmin
+      const text = user.isAdmin ? 'user' : 'admin'
+      req.flash(
+        'success_messages',
+        `使用者：${user.name} 權限更新成 ${text} 成功！`
+      )
+      user.isAdmin = updatedAdmin
+      user.save().then(res.redirect('/admin/users'))
+    })
   }
 }
 
