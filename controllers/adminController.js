@@ -29,36 +29,14 @@ const adminController = {
   },
 
   putRestaurant: (req, res) => {
-    if (!req.body.name) {
-      req.flash('error_messages', '餐廳名稱不存在！')
-      res.redirect('back')
-    } else {
-      const { file } = req
-
-      if (file) {
-        imgur.setClientID(IMGUR_CLIENT_ID)
-        imgur.upload(file.path, (err, img) => {
-          Restaurant.findByPk(req.params.id).then(restaurant => {
-            restaurant.update(req.body)
-            restaurant.image = img.data.link
-            restaurant.save().then(restaurant => {
-              req.flash(
-                'success_messages',
-                `餐廳 ${restaurant.name} 更新成功！`
-              )
-              res.redirect('/admin/restaurants')
-            })
-          })
-        })
-      } else {
-        Restaurant.findByPk(req.params.id).then(restaurant => {
-          restaurant.update(req.body).then(restaurant => {
-            req.flash('success_messages', `餐廳 ${restaurant.name} 更新成功！`)
-            res.redirect('/admin/restaurants')
-          })
-        })
+    adminService.putRestaurant(req, res, data => {
+      if (data['status'] === 'error') {
+        req.flash('error_messages', data['message'])
+        return res.redirect('back')
       }
-    }
+      req.flash('success_messages', data['message'])
+      res.redirect('/admin/restaurants')
+    })
   },
 
   createRestaurant: (req, res) => {

@@ -64,6 +64,39 @@ const adminService = {
         })
       }
     }
+  },
+
+  putRestaurant: (req, res, callback) => {
+    if (!req.body.name) {
+      return callback({ status: 'error', message: '餐廳名稱不存在！' })
+    } else {
+      const { file } = req
+
+      if (file) {
+        imgur.setClientID(IMGUR_CLIENT_ID)
+        imgur.upload(file.path, (err, img) => {
+          Restaurant.findByPk(req.params.id).then(restaurant => {
+            restaurant.update(req.body)
+            restaurant.image = img.data.link
+            restaurant.save().then(restaurant => {
+              return callback({
+                status: 'success',
+                message: `餐廳 ${restaurant.name} 新增成功！`
+              })
+            })
+          })
+        })
+      } else {
+        Restaurant.findByPk(req.params.id).then(restaurant => {
+          restaurant.update(req.body).then(restaurant => {
+            return callback({
+              status: 'success',
+              message: `餐廳 ${restaurant.name} 新增成功！`
+            })
+          })
+        })
+      }
+    }
   }
 }
 
