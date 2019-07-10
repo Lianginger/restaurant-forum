@@ -2,6 +2,8 @@ const db = require('../models')
 const Restaurant = db.Restaurant
 const User = db.User
 const Category = db.Category
+const imgur = require('imgur-node-api')
+const IMGUR_CLIENT_ID = 'a6377f1810d0270'
 
 const adminService = {
   getRestaurants: (req, res, callback) => {
@@ -27,6 +29,41 @@ const adminService = {
         })
       })
     })
+  },
+
+  postRestaurant: (req, res, callback) => {
+    if (!req.body.name) {
+      return callback({ status: 'error', message: '餐廳名稱不存在！' })
+    } else {
+      const { file } = req
+
+      if (file) {
+        imgur.setClientID(IMGUR_CLIENT_ID)
+        imgur.upload(file.path, (err, img) => {
+          Restaurant.create({
+            name: req.body.name,
+            tel: req.body.tel,
+            address: req.body.address,
+            opening_hours: req.body.opening_hours,
+            description: req.body.description,
+            CategoryId: parseInt(req.body.CategoryId),
+            image: img.data.link
+          }).then(restaurant => {
+            return callback({
+              status: 'success',
+              message: `餐廳 ${restaurant.name} 新增成功！`
+            })
+          })
+        })
+      } else {
+        Restaurant.create(req.body).then(restaurant => {
+          return callback({
+            status: 'success',
+            message: `餐廳 ${restaurant.name} 新增成功！`
+          })
+        })
+      }
+    }
   }
 }
 
