@@ -48,6 +48,21 @@ const categoryService = {
         })
       })
     }
+  },
+
+  deleteCategory: (req, res, callback) => {
+    Category.findByPk(req.params.id).then(category => {
+      if (!category) {
+        callback({ status: 'error', message: '刪除類別名稱不存在！' })
+      } else {
+        category.destroy().then(() => {
+          callback({
+            status: 'success',
+            message: `類別 ${category.name} 刪除完成！`
+          })
+        })
+      }
+    })
   }
 }
 

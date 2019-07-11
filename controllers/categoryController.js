@@ -32,11 +32,11 @@ let categoryController = {
   },
 
   deleteCategory: (req, res) => {
-    Category.findByPk(req.params.id).then(category => {
-      category.destroy().then(() => {
-        req.flash('success_messages', `類別 ${category.name} 刪除完成！`)
+    categoryService.deleteCategory(req, res, data => {
+      if (data['status'] === 'success') {
+        req.flash('success_messages', data.message)
         res.redirect('/admin/categories')
-      })
+      }
     })
   }
 }
