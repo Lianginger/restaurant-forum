@@ -10,20 +10,14 @@ let categoryController = {
   },
 
   postCategory: (req, res) => {
-    if (!req.body.name) {
-      req.flash('error_messages', '類別名稱不存在！')
-      res.redirect('back')
-    } else {
-      Category.create(req.body)
-        .then(category => {
-          req.flash('success_messages', `類別 ${req.body.name} 新增完成！`)
-          res.redirect('/admin/categories')
-        })
-        .catch(function(err) {
-          // print the error details
-          console.log(err)
-        })
-    }
+    categoryService.postCategory(req, res, data => {
+      if (data['status'] === 'error') {
+        req.flash('error_messages', data['message'])
+        return res.redirect('back')
+      }
+      req.flash('success_messages', data['message'])
+      res.redirect('/admin/categories')
+    })
   },
 
   putCategory: (req, res) => {
