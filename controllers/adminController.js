@@ -62,12 +62,6 @@ const adminController = {
         res.redirect('/admin/restaurants')
       }
     })
-    Restaurant.findByPk(req.params.id).then(restaurant => {
-      restaurant.destroy().then(restaurant => {
-        req.flash('success_messages', `餐廳 ${restaurant.name} 刪除成功！`)
-        res.redirect('/admin/restaurants')
-      })
-    })
   },
 
   editUser: (req, res) => {
